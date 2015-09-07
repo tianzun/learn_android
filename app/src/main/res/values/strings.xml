@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">My Riddle</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_riddle_main">RiddleMain</string>
+    <string name="default_riddle">You have been given the task of transporting 3,000 apples 1,000 miles from Appleland to Bananaville. Your truck can carry 1,000 apples at a time. Every time you travel a mile towards Bananaville you must pay a tax of 1 apple but you pay nothing when going in the other direction (towards Appleland).
+
+What is highest number of apples you can get to Bananaville?</string>
+    <string-array name="riddle_array">
+        <item>You have been given the task of transporting 3,000 apples 1,000 miles from Appleland to Bananaville. Your truck can carry 1,000 apples at a time. Every time you travel a mile towards Bananaville you must pay a tax of 1 apple but you pay nothing when going in the other direction (towards Appleland).
+
+What is highest number of apples you can get to Bananaville?</item>
+        <item>Little Johnny is walking home. He has $300 he has to bring home to his mom. While he is walking a man stops him and gives him a chance to double his money. The man says "I'll give you $600 if you can roll 1 die and get a 4 or above, you can roll 2 dice and get a 5 or 6 on at least one of them, or you can roll 3 dice and get a 6 on at least on die. If you don't I get your $300."
+
+What does Johnny do to have the best chance of getting home with the money?</item>
+        <item>There are 100 coins scattered in a dark room. 90 have heads facing up and 10 are facing tails up. You cannot tell which coins are which. How do you sort the coins into two piles that contain the same number of tails up coins?</item>
+        <item>As I was going to St. Ives,
+I met a man with seven wives,
+Each wife had seven sacks,
+Each sack had seven cats,
+Each cat had seven kits:
+Kits, cats, sacks, and wives,
+How many were there going to St. Ives?</item>
+        <item>Five pirates are parting ways after finding a treasure of 100 pieces of gold. The pirates decide to split it based on a vote. Each pirate, from oldest to youngest, gets to propose a plan on how to split the gold.
+
+If at least 50 percent of the other remaining pirates agree on the plan, that is how they will split the gold. If less than 50 percent of the pirates agree, the pirate who came up with the plan will be thrown overboard. Each pirate is smart, greedy, and wants to throw as many others overboard as possible without reducing the amount of gold they get.
+
+What plan can the first (oldest) pirate propose to live and get as much gold as possible?</item>
+        <item>There are 100 passengers boarding a 100 passenger airplane. When passenger 1 gets onto the plane, he is dissoriented, so he randomly picks a seat. Each of the remaining passengers (2, 3, 4, etc.) get onto the plane and take their seat if it is available or picks one of the remaining seats at random if it is not.
+
+What is the chance that the last passenger (passenger 100) will get his seat?</item>
+        <item>Suppose you\'re on a game show, and you\'re given the choice of three doors: Behind one door is a sports car; behind all of the others is bicycles. You pick a door, say No. 1, and the host, who knows what\'s behind the doors, opens another door, say No. 2, revealing a bicycle. He then says to you, "Do you want to pick door No. 3?" Is it to your advantage to switch your choice?</item>
+    </string-array>
+</resources>
