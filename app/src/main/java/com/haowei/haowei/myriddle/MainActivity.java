@@ -8,11 +8,26 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.Scopes;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.Scope;
+import com.google.android.gms.plus.Plus;
 
-public class MainActivity extends ActionBarActivity {
+
+public class MainActivity extends ActionBarActivity
+        implements GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener {
     private RecyclerView mRecycleView;
     private RecyclerView.LayoutManager mLayoutManger;
     private RiddleListAdapter mAdapter;
+
+    private static final String TAG = "MainActivity";
+    /* Request code used to invoke sign in user interactions. */
+    private static final int RC_SIGN_IN = 0;
+
+    /* Client used to interact with Google APIs. */
+    private GoogleApiClient mGoogleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +39,14 @@ public class MainActivity extends ActionBarActivity {
 
         mAdapter = new RiddleListAdapter(this, mRecycleView);
         mRecycleView.setAdapter(mAdapter);
+
+        // Build GoogleApiClient with access to basic profile
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(Plus.API)
+                .addScope(new Scope(Scopes.PROFILE))
+                .build();
 
         Log.i("OnCreate", "Creating...");
         RiddleDBTask a_task = new RiddleDBTask(this);
@@ -50,5 +73,32 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mGoogleApiClient.disconnect();
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        Log.d(TAG, "onConnected:" + bundle);
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        Log.w(TAG, "onConnectionSuspended:" + i);
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        Log.d(TAG, "onConnectionFailed:" + connectionResult);
     }
 }
