@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,7 +34,10 @@ public class RiddleMain extends ActionBarActivity implements
     private Button mGetHintButton;
     private int riddle_id;
     private String riddle_string;
+    private String riddle_answer;
     private TextView mCountDownText;
+    private EditText mAnswerInput;
+    private Button mSubmitAnswerButton;
     private int MILLI_SECONDS = 1000;
     private RiddleDAO riddleDAO;
     private RiddleItem riddleItem;
@@ -75,6 +79,7 @@ public class RiddleMain extends ActionBarActivity implements
         Bundle bundle = intent.getExtras();
         riddle_string = bundle.getString("riddle");
         riddle_id = bundle.getInt("riddle_id");
+        riddle_answer = bundle.getString("riddle_answer");
         Toast.makeText(this, "riddle_id: "+riddle_id, Toast.LENGTH_LONG).show();
         TextView v = (TextView) findViewById(R.id.riddle_main_text_view);
         v.setText(riddle_string);
@@ -83,6 +88,23 @@ public class RiddleMain extends ActionBarActivity implements
 
         mGetHintButton = (Button) findViewById(R.id.get_hint_button);
         mCountDownText = (TextView) findViewById(R.id.get_hint_text);
+        mAnswerInput = (EditText) findViewById(R.id.answerInputText);
+        mSubmitAnswerButton = (Button) findViewById(R.id.submit_answer);
+        mSubmitAnswerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String answerInput = mAnswerInput.getText().toString();
+                if(riddle_answer.equals(answerInput)){
+                    Toast.makeText(RiddleMain.this,
+                            "Correct: " + answerInput, Toast.LENGTH_LONG).show();
+                    mAnswerInput.setText("");
+                } else {
+                    Toast.makeText(RiddleMain.this,
+                            "Wrong: " + answerInput + ", correct: " + riddle_answer,
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+        });
         mGetHintButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

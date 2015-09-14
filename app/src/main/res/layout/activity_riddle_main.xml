@@ -61,7 +61,7 @@
             android:layout_height="wrap_content"
             android:inputType="numberDecimal"
             android:ems="10"
-            android:id="@+id/editText" />
+            android:id="@+id/answerInputText" />
 
         <Button
             android:layout_width="wrap_content"

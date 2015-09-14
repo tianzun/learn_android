@@ -14,7 +14,6 @@ What is highest number of apples you can get to Bananaville?</item>
         <item>Little Johnny is walking home. He has $300 he has to bring home to his mom. While he is walking a man stops him and gives him a chance to double his money. The man says "I'll give you $600 if you can roll 1 die and get a 4 or above, you can roll 2 dice and get a 5 or 6 on at least one of them, or you can roll 3 dice and get a 6 on at least on die. If you don't I get your $300."
 
 What does Johnny do to have the best chance of getting home with the money?</item>
-        <item>There are 100 coins scattered in a dark room. 90 have heads facing up and 10 are facing tails up. You cannot tell which coins are which. How do you sort the coins into two piles that contain the same number of tails up coins?</item>
         <item>As I was going to St. Ives,
 I met a man with seven wives,
 Each wife had seven sacks,
@@ -29,7 +28,15 @@ If at least 50 percent of the other remaining pirates agree on the plan, that is
 What plan can the first (oldest) pirate propose to live and get as much gold as possible?</item>
         <item>There are 100 passengers boarding a 100 passenger airplane. When passenger 1 gets onto the plane, he is dissoriented, so he randomly picks a seat. Each of the remaining passengers (2, 3, 4, etc.) get onto the plane and take their seat if it is available or picks one of the remaining seats at random if it is not.
 
-What is the chance that the last passenger (passenger 100) will get his seat?</item>
-        <item>Suppose you\'re on a game show, and you\'re given the choice of three doors: Behind one door is a sports car; behind all of the others is bicycles. You pick a door, say No. 1, and the host, who knows what\'s behind the doors, opens another door, say No. 2, revealing a bicycle. He then says to you, "Do you want to pick door No. 3?" Is it to your advantage to switch your choice?</item>
+What is the chance (percentage) that the last passenger (passenger 100) will get his seat?</item>
+        <item>Suppose you\'re on a game show, and you\'re given the choice of three doors: Behind one door is a sports car; behind all of the others is bicycles. You pick a door, say No. 1, and the host, who knows what\'s behind the doors, opens another door, say No. 2, revealing a bicycle. He then says to you, "Do you want to pick door No. 3?" Is it to your advantage to switch your choice?  What is your winning chance?</item>
+    </string-array>
+    <string-array name="answer_array">
+        <item>833</item>
+        <item>100</item>
+        <item>1</item>
+        <item>98</item>
+        <item>50</item>
+        <item>0.67</item>
     </string-array>
 </resources>

@@ -20,6 +20,7 @@ public class RiddleListAdapter extends RecyclerView.Adapter<RiddleListAdapter.Vi
     private RecyclerView mRecyclerView;
     private ArrayList<String> list = new ArrayList<>();
     private String[] riddle_array;
+    private String[] answer_array;
 
     public RiddleListAdapter(Context context, RecyclerView recyclerView){
         mContext = context;
@@ -30,6 +31,7 @@ public class RiddleListAdapter extends RecyclerView.Adapter<RiddleListAdapter.Vi
             /*list.add(Character.toString(c));*/
             list.add(riddle);
         }
+        answer_array = res.getStringArray(R.array.answer_array);
     }
 
     @Override
@@ -43,6 +45,7 @@ public class RiddleListAdapter extends RecyclerView.Adapter<RiddleListAdapter.Vi
                 int position = mRecyclerView.getChildAdapterPosition(v);
                 intent.putExtra("riddle", list.get(position));
                 intent.putExtra("riddle_id", position);
+                intent.putExtra("riddle_answer", answer_array[position]);
                 mContext.startActivity(intent);
             }
         });
