@@ -94,7 +94,7 @@ public class RiddleMain extends ActionBarActivity implements
             @Override
             public void onClick(View v) {
                 String answerInput = mAnswerInput.getText().toString();
-                if(riddle_answer.equals(answerInput)){
+                if(checkAnswer(answerInput, riddle_answer)){
                     Toast.makeText(RiddleMain.this,
                             "Correct: " + answerInput, Toast.LENGTH_LONG).show();
                     mAnswerInput.setText("");
@@ -177,6 +177,29 @@ public class RiddleMain extends ActionBarActivity implements
         // return super.onOptionsItemSelected(item);
         return false;
     }*/
+
+    private boolean checkAnswer(String input, String answer){
+        double answer_double = Double.parseDouble(answer);
+        double input_double = Double.parseDouble(input);
+        if (answer_double == 0.0) {
+            return input_double == 0.0;
+        }
+        if (answer_double >= 100.0) {
+            return Math.abs(input_double - answer_double) <= 1.1;
+        }
+        if (answer_double <= 1.0) {
+            return Math.abs(input_double - answer_double) <= 0.011;
+        }
+        // For percentage, 0.5 or 50 % is equally correct
+        if (Math.abs(input_double * 100.0 - answer_double) <= 0.1)
+            return true;
+
+        // 1 % accuracy
+        if (Math.abs(input_double - answer_double) <= input_double / 100.0)
+            return true;
+        else
+            return false;
+    }
 
     private void setCountDown() {
         mCountDownText.setText("");
