@@ -39,4 +39,8 @@ What is the chance (percentage) that the last passenger (passenger 100) will get
         <item>50</item>
         <item>0.67</item>
     </string-array>
+    <string-array name="hint_array">
+        <item>Step one: First you want to make 3 trips of 1,000 apples 333 miles. You will be left with 2,001 apples and 667 miles to go.</item>
+        <item></item>
+    </string-array>
 </resources>

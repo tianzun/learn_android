@@ -17,19 +17,29 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.AuthData;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.google.android.gms.auth.GoogleAuthException;
+import com.google.android.gms.auth.GoogleAuthUtil;
+import com.google.android.gms.auth.UserRecoverableAuthException;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.plus.Plus;
 
+import java.io.IOException;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 
 public class RiddleMain extends ActionBarActivity implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
-        View.OnClickListener{
+        View.OnClickListener, AsyncResponse {
 
     private Button mGetHintButton;
     private int riddle_id;
@@ -38,10 +48,17 @@ public class RiddleMain extends ActionBarActivity implements
     private TextView mCountDownText;
     private EditText mAnswerInput;
     private Button mSubmitAnswerButton;
+    private Button mSignOutButton;
     private int MILLI_SECONDS = 1000;
     private RiddleDAO riddleDAO;
     private RiddleItem riddleItem;
     private ShareActionProvider mShareActionProvider;
+
+    /* Google Plus Token */
+    private String token;
+
+    /* Goofle Plus client id*/
+    private String googleId;
 
     /* Request code used to invoke sign in user interactions. */
     private static final int RC_SIGN_IN = 0;
@@ -57,9 +74,17 @@ public class RiddleMain extends ActionBarActivity implements
 
     private static final String TAG = "RiddleMainActivity";
 
+    /* Firebase client */
+    private Firebase myFirebaseRef;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Firebase.setAndroidContext(this);
+
+        myFirebaseRef = new Firebase("https://shining-heat-2559.firebaseio.com/");
+
         setContentView(R.layout.activity_riddle_main);
 
         // Build GoogleApiClient with access to basic profile
@@ -80,7 +105,7 @@ public class RiddleMain extends ActionBarActivity implements
         riddle_string = bundle.getString("riddle");
         riddle_id = bundle.getInt("riddle_id");
         riddle_answer = bundle.getString("riddle_answer");
-        Toast.makeText(this, "riddle_id: "+riddle_id, Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "riddle_id: "+riddle_id, Toast.LENGTH_SHORT).show();
         TextView v = (TextView) findViewById(R.id.riddle_main_text_view);
         v.setText(riddle_string);
         riddleDAO = new RiddleDAO(RiddleMain.this);
@@ -96,12 +121,19 @@ public class RiddleMain extends ActionBarActivity implements
                 String answerInput = mAnswerInput.getText().toString();
                 if(checkAnswer(answerInput, riddle_answer)){
                     Toast.makeText(RiddleMain.this,
-                            "Correct: " + answerInput, Toast.LENGTH_LONG).show();
+                            "Correct: " + answerInput, Toast.LENGTH_SHORT).show();
                     mAnswerInput.setText("");
+
+                    /*save status to firebase*/
+                    Firebase solRef = myFirebaseRef.child("users").child(googleId).child("solved");
+                    Map<String, Object> sol = new HashMap<>();
+                    sol.put(String.valueOf(riddle_id), Boolean.TRUE);
+                    solRef.updateChildren(sol);
+
                 } else {
                     Toast.makeText(RiddleMain.this,
                             "Wrong: " + answerInput + ", correct: " + riddle_answer,
-                            Toast.LENGTH_LONG).show();
+                            Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -115,8 +147,28 @@ public class RiddleMain extends ActionBarActivity implements
             }
         });
 
+        mSignOutButton = (Button) findViewById(R.id.sign_out_button);
+        mSignOutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onSignOutClicked();
+            }
+        });
+
         setCountDown();
     }
+
+    private void onSignOutClicked() {
+        // Clear the default account so that GoogleApiClient will not automatically
+        // connect in the future.
+        if (mGoogleApiClient.isConnected()) {
+            Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
+            mGoogleApiClient.disconnect();
+        }
+        myFirebaseRef.unauth();
+        showSignedOutUI();
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -221,7 +273,7 @@ public class RiddleMain extends ActionBarActivity implements
 
                 public void onFinish() {
                     mCountDownText.setText("This is the Hint");
-                    Toast.makeText(RiddleMain.this, "Count Down Finish", Toast.LENGTH_LONG).show();
+                    Toast.makeText(RiddleMain.this, "Count Down Finish", Toast.LENGTH_SHORT).show();
                 }
             }.start();
         } else if (count_down == 0){
@@ -263,8 +315,27 @@ public class RiddleMain extends ActionBarActivity implements
         Log.d(TAG, "onConnected:" + bundle);
         mShouldResolve = false;
 
+        String email = Plus.AccountApi.getAccountName(mGoogleApiClient);
+        GetUsernameTask task = new GetUsernameTask(this, email);
+        task.delegate = this;
+        task.execute();
+
         // Show the signed-in UI
         showSignedInUI();
+    }
+
+    private void firebaseRefAuth() {
+        myFirebaseRef.authWithOAuthToken("google", token, new Firebase.AuthResultHandler() {
+            @Override
+            public void onAuthenticated(AuthData authData) {
+                // the Google user is now authenticated with your Firebase app
+                googleId = authData.getUid();
+            }
+            @Override
+            public void onAuthenticationError(FirebaseError firebaseError) {
+                // there was an error
+            }
+        });
     }
 
     @Override
@@ -320,16 +391,23 @@ public class RiddleMain extends ActionBarActivity implements
     private void showErrorDialog(ConnectionResult connectionResult){
         Toast.makeText(this,
                 "Connection Error" + connectionResult,
-                Toast.LENGTH_LONG
+                Toast.LENGTH_SHORT
         ).show();
     }
 
     private void showSignedOutUI(){
-        Toast.makeText(this, "Signed Out, bye...", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Signed Out, bye...", Toast.LENGTH_SHORT).show();
     }
 
     private void showSignedInUI(){
-        Toast.makeText(this, "Signed In, Congrats!", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Signed In, Congrats!", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void processFinish(String output) {
+        token = output;
+        // Toast.makeText(this, "Get token within main activity:" + output, Toast.LENGTH_SHORT).show();
+        firebaseRefAuth();
     }
 
     public class MyDateTime {
