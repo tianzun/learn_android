@@ -55,6 +55,8 @@ public class MainActivity extends ActionBarActivity
         Log.i("OnCreate", "Creating...");
         RiddleDBTask a_task = new RiddleDBTask(this);
         a_task.execute("Initial");
+        // Parse.initialize(this, "", "");
+        // ParseInstallation.getCurrentInstallation().saveInBackground();
     }
 
     @Override
