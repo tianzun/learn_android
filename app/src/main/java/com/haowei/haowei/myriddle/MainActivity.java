@@ -14,6 +14,8 @@ import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.plus.Plus;
+import com.parse.Parse;
+import com.parse.ParseInstallation;
 
 
 public class MainActivity extends ActionBarActivity
@@ -55,8 +57,8 @@ public class MainActivity extends ActionBarActivity
         Log.i("OnCreate", "Creating...");
         RiddleDBTask a_task = new RiddleDBTask(this);
         a_task.execute("Initial");
-        // Parse.initialize(this, "", "");
-        // ParseInstallation.getCurrentInstallation().saveInBackground();
+        // Parse.initialize ...
+        ParseInstallation.getCurrentInstallation().saveInBackground();
     }
 
     @Override

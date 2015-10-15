@@ -125,10 +125,12 @@ public class RiddleMain extends ActionBarActivity implements
                     mAnswerInput.setText("");
 
                     /*save status to firebase*/
-                    Firebase solRef = myFirebaseRef.child("users").child(googleId).child("solved");
-                    Map<String, Object> sol = new HashMap<>();
-                    sol.put(String.valueOf(riddle_id), Boolean.TRUE);
-                    solRef.updateChildren(sol);
+                    if (googleId != null) {
+                        Firebase solRef = myFirebaseRef.child("users").child(googleId).child("solved");
+                        Map<String, Object> sol = new HashMap<>();
+                        sol.put(String.valueOf(riddle_id), Boolean.TRUE);
+                        solRef.updateChildren(sol);
+                    }
 
                 } else {
                     Toast.makeText(RiddleMain.this,
