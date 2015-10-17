@@ -12,6 +12,7 @@ import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Created by haowei on 10/14/15.
@@ -22,6 +23,8 @@ public class RegistrationIntentService extends IntentService {
 
     private static final String[] TOPICS = {"global"};
 
+    private String projectNumber = null;
+
     /* Creates an IntentService.  Invoked by your subclass's constructor.*/
     public RegistrationIntentService() {
         super(TAG);
@@ -30,10 +33,12 @@ public class RegistrationIntentService extends IntentService {
 
     private String getInstanceIDToken() {
 
+        projectNumber = loadProjectNumber();
+
         String iid = InstanceID.getInstance(this).getId();
         Log.i(TAG, "iid is:" + iid);
 
-        String authorizedEntity = ""; // Project id from Google Developers Console
+        String authorizedEntity = projectNumber; // Project id from Google Developers Console
         String scope = "GCM"; // e.g. communicating using GCM, but you can use any
         // URL-safe characters up to a maximum of 1000, or
         // you can also leave it blank.
@@ -71,5 +76,22 @@ public class RegistrationIntentService extends IntentService {
             Log.i(TAG, "subscribing topic, topic is " + topic);
             pubSub.subscribe(token, "/topics/" + topic, null);
         }
+    }
+
+    private String loadProjectNumber() {
+        String projectNumber = null;
+        try {
+            InputStream is = getAssets().open("google.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            projectNumber = new String(buffer);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        Log.i(TAG, "projectNumber is:" + projectNumber);
+        return projectNumber;
     }
 }
