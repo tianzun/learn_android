@@ -1,5 +1,6 @@
 package com.haowei.haowei.myriddle;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -7,15 +8,15 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.firebase.client.Firebase;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Scope;
+import com.google.android.gms.iid.InstanceID;
 import com.google.android.gms.plus.Plus;
-import com.parse.Parse;
-import com.parse.ParseInstallation;
 
 
 public class MainActivity extends ActionBarActivity
@@ -57,8 +58,17 @@ public class MainActivity extends ActionBarActivity
         Log.i("OnCreate", "Creating...");
         RiddleDBTask a_task = new RiddleDBTask(this);
         a_task.execute("Initial");
-        // Parse.initialize ...
-        ParseInstallation.getCurrentInstallation().saveInBackground();
+
+        // Register Intent Service and Get Token
+        getInstanceID();
+        Intent intent = new Intent(this, RegistrationIntentService.class);
+        startService(intent);
+    }
+
+    private String getInstanceID() {
+        String iid = InstanceID.getInstance(this).getId();
+        Toast.makeText(this, "iid is "+iid, Toast.LENGTH_SHORT).show();
+        return iid;
     }
 
     @Override

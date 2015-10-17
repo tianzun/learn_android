@@ -233,8 +233,14 @@ public class RiddleMain extends ActionBarActivity implements
     }*/
 
     private boolean checkAnswer(String input, String answer){
-        double answer_double = Double.parseDouble(answer);
-        double input_double = Double.parseDouble(input);
+        double answer_double, input_double;
+        Log.i("checkAnswer", "input:" + input + ", answer:" + answer);
+        answer_double = Double.parseDouble(answer);
+        try {
+            input_double = Double.parseDouble(input);
+        } catch (NumberFormatException e) {
+            return false;
+        }
         if (answer_double == 0.0) {
             return input_double == 0.0;
         }
