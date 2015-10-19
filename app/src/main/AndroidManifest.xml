@@ -33,7 +33,8 @@
             android:name=".RiddleMain"
             android:label="@string/title_activity_riddle_main"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/Theme.AppCompat.Light" >
+            android:theme="@style/Theme.AppCompat.Light"
+            android:windowSoftInputMode="stateHidden" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
